@@ -1,9 +1,10 @@
 <?php
 
-namespace Jacobcyl\AliOSS;
+namespace Dgene\AliOSS;
 
-use Jacobcyl\AliOSS\Plugins\PutFile;
-use Jacobcyl\AliOSS\Plugins\PutRemoteFile;
+use Dgene\AliOSS\Plugins\PutFile;
+use Dgene\AliOSS\Plugins\PutRemoteFile;
+use Dgene\AliOSS\Plugins\SignedDownloadUrl;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
@@ -20,15 +21,6 @@ class AliOssServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //发布配置文件
-        /*
-        if (function_exists('config_path')) {
-            $this->publishes([
-                __DIR__ . '/config/config.php' => config_path('alioss.php'),
-            ], 'config');
-        }
-        */
-
         Storage::extend('oss', function($app, $config)
         {
             $accessId  = $config['access_id'];
@@ -53,7 +45,7 @@ class AliOssServiceProvider extends ServiceProvider
             
             $filesystem->addPlugin(new PutFile());
             $filesystem->addPlugin(new PutRemoteFile());
-            //$filesystem->addPlugin(new CallBack());
+            $filesystem->addPlugin(new SignedDownloadUrl());
             return $filesystem;
         });
     }

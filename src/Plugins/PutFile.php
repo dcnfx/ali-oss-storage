@@ -1,12 +1,5 @@
 <?php
-/**
- * Created by jacob.
- * User: jacob
- * Date: 16/5/20
- * Time: 下午8:31
- */
-
-namespace Jacobcyl\AliOSS\Plugins;
+namespace Dgene\AliOSS\Plugins;
 
 use Illuminate\Support\Facades\Log;
 use League\Flysystem\Config;

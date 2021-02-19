@@ -1,11 +1,6 @@
 <?php
-/**
- * Created by jacob.
- * Date: 2016/5/19 0019
- * Time: 下午 17:07
- */
 
-namespace Jacobcyl\AliOSS;
+namespace Dgene\AliOSS;
 
 use Dingo\Api\Contract\Transformer\Adapter;
 use League\Flysystem\Adapter\AbstractAdapter;
@@ -567,7 +562,7 @@ class AliOssAdapter extends AbstractAdapter
      */
     public function getUrl( $path )
     {
-        if (!$this->has($path)) throw new FileNotFoundException($filePath.' not found');
+        if (!$this->has($path)) throw new FileNotFoundException($path.' not found');
         return ( $this->ssl ? 'https://' : 'http://' ) . ( $this->isCname ? ( $this->cdnDomain == '' ? $this->endPoint : $this->cdnDomain ) : $this->bucket . '.' . $this->endPoint ) . '/' . ltrim($path, '/');
     }
 
@@ -665,6 +660,36 @@ class AliOssAdapter extends AbstractAdapter
         }
 
         return $options;
+    }
+
+    /**
+     * Get the signed download url of a file.
+     *
+     * @param $path
+     * @param int $expires
+     * @return \OSS\Http\ResponseCore|string
+     * @throws OssException
+     */
+    public function getSignedDownloadUrl($path, $expires = 3600)
+    {
+        $object = $this->applyPathPrefix($path);
+        $url = $this->client->signUrl($this->bucket, $object, $expires);
+
+        $parse_url = parse_url($url);
+        $parse_url['host'] = $this->cdnDomain;
+        if ($this->ssl) {
+            $parse_url['scheme'] = 'https';
+        }
+
+        $url = (isset($parse_url['scheme']) ? $parse_url['scheme'].'://' : '')
+            .(isset($parse_url['user']) ?
+                $parse_url['user'].(isset($parse_url['pass']) ? ':'.$parse_url['pass'] : '').'@'
+                : '')
+            .(isset($parse_url['host']) ? $parse_url['host'] : '')
+            .(isset($parse_url['port']) ? ':'.$parse_url['port'] : '')
+            .(isset($parse_url['path']) ? $parse_url['path'] : '')
+            .(isset($parse_url['query']) ? '?'.$parse_url['query'] : '');
+        return $url;
     }
 
     /**

@@ -1,9 +1,7 @@
 # Aliyun-oss-storage for Laravel 5+
 Aliyun oss filesystem storage adapter for laravel 5. You can use Aliyun OSS just like laravel Storage as usual.    
-借鉴了一些优秀的代码，综合各方，同时做了更多优化，将会添加更多完善的接口和插件，打造Laravel最好的OSS Storage扩展
 ## Inspired By
-- [thephpleague/flysystem-aws-s3-v2](https://github.com/thephpleague/flysystem-aws-s3-v2)
-- [apollopy/flysystem-aliyun-oss](https://github.com/apollopy/flysystem-aliyun-oss) 
+- [jacobcyl/Aliyun-oss-storage](https://github.com/jacobcyl/Aliyun-oss-storage) 
 
 ## Require
 - Laravel 5+
@@ -12,17 +10,13 @@ Aliyun oss filesystem storage adapter for laravel 5. You can use Aliyun OSS just
 ##Installation
 In order to install AliOSS-storage, just add
 
-    "jacobcyl/ali-oss-storage": "^2.1"
+    "dgene/ali-oss-storage": "^2.1"
 
 to your composer.json. Then run `composer install` or `composer update`.  
 Or you can simply run below command to install:
 
     "composer require jacobcyl/ali-oss-storage:^2.1"
     
-Then in your `config/app.php` add this line to providers array:
-```php
-Jacobcyl\AliOSS\AliOssServiceProvider::class,
-```
 ## Configuration
 Add the following in app/filesystems.php:
 ```php
@@ -95,7 +89,8 @@ Storage::deleteDirectory($directory); // Recursively delete a directory.It will 
 // new plugin for v2.0 version
 Storage::putRemoteFile('target/path/to/file/jacob.jpg', 'http://example.com/jacob.jpg'); //upload remote file to storage by remote url
 // new function for v2.0.1 version
-Storage::url('path/to/img.jpg') // get the file url
+Storage::url('path/to/img.jpg'); // get the file url
+Storage::signedDownloadUrl('path/to/img.jpg',3600); // get the signed file url
 ```
 
 ## Documentation
