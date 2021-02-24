@@ -20,10 +20,11 @@ class SignedDownloadUrl extends AbstractPlugin
      * Handle.
      *
      * @param string $path
-     * @param int    $expires
+     * @param $name
+     * @param int $expires
      * @return string|false
      */
-    public function handle($path, $expires = 3600)
+    public function handle($path, $name = null, $expires = 3600)
     {
         if (! method_exists($this->filesystem, 'getAdapter')) {
             return false;
@@ -33,6 +34,6 @@ class SignedDownloadUrl extends AbstractPlugin
             return false;
         }
 
-        return $this->filesystem->getAdapter()->getSignedDownloadUrl($path, $expires);
+        return $this->filesystem->getAdapter()->getSignedDownloadUrl($path, $name, $expires);
     }
 }

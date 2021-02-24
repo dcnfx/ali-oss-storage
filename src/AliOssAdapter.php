@@ -666,15 +666,18 @@ class AliOssAdapter extends AbstractAdapter
      * Get the signed download url of a file.
      *
      * @param $path
+     * @param $new_file_name
      * @param int $expires
      * @return \OSS\Http\ResponseCore|string
-     * @throws OssException
      */
-    public function getSignedDownloadUrl($path, $expires = 3600)
+    public function getSignedDownloadUrl($path, $new_file_name=null, $expires = 3600)
     {
+        $new_file_name = is_null($new_file_name) ? basename($path):$new_file_name;
         $object = $this->applyPathPrefix($path);
-        $url = $this->client->signUrl($this->bucket, $object, $expires);
-
+        $oss_config = array(
+            OssClient::OSS_SUB_RESOURCE => 'response-content-disposition=attachment%3Bfilename%3D'.$new_file_name
+        );
+        $url = $this->client->signUrl($this->bucket, $object, $expires, OssClient::OSS_HTTP_GET, $oss_config);
         $parse_url = parse_url($url);
         $parse_url['host'] = $this->cdnDomain;
         if ($this->ssl) {

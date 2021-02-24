@@ -90,7 +90,7 @@ Storage::deleteDirectory($directory); // Recursively delete a directory.It will 
 Storage::putRemoteFile('target/path/to/file/jacob.jpg', 'http://example.com/jacob.jpg'); //upload remote file to storage by remote url
 // new function for v2.0.1 version
 Storage::url('path/to/img.jpg'); // get the file url
-Storage::signedDownloadUrl('path/to/img.jpg',3600); // get the signed file url
+Storage::signedDownloadUrl('path/to/img.jpg', 'new_name.jpg', 3600); // get the signed file url
 ```
 
 ## Documentation
