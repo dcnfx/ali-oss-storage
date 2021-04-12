@@ -675,7 +675,7 @@ class AliOssAdapter extends AbstractAdapter
         $new_file_name = is_null($new_file_name) ? basename($path):$new_file_name;
         $object = $this->applyPathPrefix($path);
         $oss_config = array(
-            OssClient::OSS_SUB_RESOURCE => 'response-content-disposition=attachment%3Bfilename%3D'.$new_file_name
+            OssClient::OSS_SUB_RESOURCE => 'response-content-disposition=attachment%3Bfilename%3D'.urlencode($new_file_name)
         );
         $url = $this->client->signUrl($this->bucket, $object, $expires, OssClient::OSS_HTTP_GET, $oss_config);
         $parse_url = parse_url($url);
